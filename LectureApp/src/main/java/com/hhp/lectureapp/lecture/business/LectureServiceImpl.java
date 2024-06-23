@@ -1,7 +1,7 @@
 package com.hhp.lectureapp.lecture.business;
 
-import com.hhp.lectureapp.lecture.controller.LectureService;
 import com.hhp.lectureapp.lecture.controller.dto.GetLectureDto;
+import com.hhp.lectureapp.lecture.persistence.LectureRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 

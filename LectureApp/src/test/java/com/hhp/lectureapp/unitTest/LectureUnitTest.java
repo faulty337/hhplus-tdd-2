@@ -2,9 +2,7 @@ package com.hhp.lectureapp.unitTest;
 
 
 import com.hhp.lectureapp.lecture.business.LectureDomain;
-import com.hhp.lectureapp.lecture.business.LectureRepository;
 import com.hhp.lectureapp.lecture.business.LectureServiceImpl;
-import com.hhp.lectureapp.lecture.controller.LectureService;
 import com.hhp.lectureapp.lecture.controller.dto.GetLectureDto;
 import com.hhp.lectureapp.lecture.persistence.LectureRepositoryImpl;
 import org.junit.jupiter.api.BeforeEach;
