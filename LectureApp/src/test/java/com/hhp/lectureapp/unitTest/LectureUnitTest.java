@@ -5,7 +5,7 @@ import com.hhp.lectureapp.common.CustomException;
 import com.hhp.lectureapp.common.ErrorCode;
 import com.hhp.lectureapp.lecture.business.LectureDomain;
 import com.hhp.lectureapp.lecture.business.LectureServiceImpl;
-import com.hhp.lectureapp.lecture.controller.dto.GetLectureDto;
+import com.hhp.lectureapp.lecture.business.dto.GetLectureDto;
 import com.hhp.lectureapp.lecture.persistence.LectureRepositoryImpl;
 import com.hhp.lectureapp.user.business.UserDomain;
 import com.hhp.lectureapp.user.persistence.UserRepositoryImpl;

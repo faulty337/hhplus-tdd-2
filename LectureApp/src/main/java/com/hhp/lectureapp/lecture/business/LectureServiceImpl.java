@@ -1,10 +1,10 @@
 package com.hhp.lectureapp.lecture.business;
 
-import com.hhp.lectureapp.lecture.controller.dto.GetLectureDto;
+import com.hhp.lectureapp.lecture.business.dto.GetLectureDto;
 import com.hhp.lectureapp.lecture.persistence.LectureRepository;
 import com.hhp.lectureapp.common.CustomException;
 import com.hhp.lectureapp.common.ErrorCode;
-import com.hhp.lectureapp.lecture.controller.dto.PostLectureDto;
+import com.hhp.lectureapp.lecture.business.dto.PostLectureDto;
 import com.hhp.lectureapp.user.business.UserDomain;
 import com.hhp.lectureapp.user.business.UserRepository;
 import lombok.RequiredArgsConstructor;

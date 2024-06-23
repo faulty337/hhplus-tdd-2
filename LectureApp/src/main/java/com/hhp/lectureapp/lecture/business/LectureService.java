@@ -1,7 +1,7 @@
 package com.hhp.lectureapp.lecture.business;
 
-import com.hhp.lectureapp.lecture.controller.dto.GetLectureDto;
-import com.hhp.lectureapp.lecture.controller.dto.PostLectureDto;
+import com.hhp.lectureapp.lecture.business.dto.GetLectureDto;
+import com.hhp.lectureapp.lecture.business.dto.PostLectureDto;
 
 import java.util.List;
 

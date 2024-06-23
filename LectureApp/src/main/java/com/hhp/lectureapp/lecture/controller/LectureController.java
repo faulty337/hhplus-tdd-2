@@ -2,8 +2,8 @@ package com.hhp.lectureapp.lecture.controller;
 
 
 import com.hhp.lectureapp.lecture.business.LectureService;
-import com.hhp.lectureapp.lecture.controller.dto.GetLectureDto;
-import com.hhp.lectureapp.lecture.controller.dto.PostLectureDto;
+import com.hhp.lectureapp.lecture.business.dto.GetLectureDto;
+import com.hhp.lectureapp.lecture.business.dto.PostLectureDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
