@@ -5,6 +5,7 @@ import com.hhp.lectureapp.lecture.controller.dto.GetLectureDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -14,7 +15,8 @@ public class LectureServiceImpl implements LectureService {
     private final LectureRepository lectureRepository;
     @Override
     public List<GetLectureDto> getLectureList() {
-        return lectureRepository.findAllByOpenAndNotFull().stream()
+        LocalDateTime now = LocalDateTime.now();
+        return lectureRepository.findAllByOpenedAtBeforeAndIsFull(now, false).stream()
                 .map(lecture -> new GetLectureDto(
                         lecture.getId(),
                         lecture.getUserCount(),

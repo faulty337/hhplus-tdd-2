@@ -3,7 +3,6 @@ package com.hhp.lectureapp.e2e;
 
 import com.hhp.lectureapp.lecture.persistence.Lecture;
 import com.hhp.lectureapp.lecture.persistence.LectureJpaRepository;
-import com.jayway.jsonpath.JsonPath;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

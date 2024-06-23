@@ -1,7 +1,8 @@
 package com.hhp.lectureapp.lecture.business;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface LectureRepository{
-    public List<LectureDomain> findAllByOpenAndNotFull();
+    List<LectureDomain> findAllByOpenedAtBeforeAndIsFull(LocalDateTime dateTime, Boolean isFull);
 }

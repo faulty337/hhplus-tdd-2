@@ -13,9 +13,10 @@ import java.util.List;
 public class LectureRepositoryImpl implements LectureRepository {
 
     private final LectureJpaRepository lectureJpaRepository;
+
     @Override
-    public List<LectureDomain> findAllByOpenAndNotFull() {
-        return lectureJpaRepository.findAllByOpenedAtBeforeAndIsFull(LocalDateTime.now(), false).stream()
+    public List<LectureDomain> findAllByOpenedAtBeforeAndIsFull(LocalDateTime dateTime, Boolean isFull) {
+        return lectureJpaRepository.findAllByOpenedAtBeforeAndIsFull(dateTime, isFull).stream()
                 .map(Lecture::toDomain).toList();
     }
 }
