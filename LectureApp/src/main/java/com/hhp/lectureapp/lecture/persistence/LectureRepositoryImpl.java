@@ -1,7 +1,6 @@
 package com.hhp.lectureapp.lecture.persistence;
 
 import com.hhp.lectureapp.lecture.business.LectureDomain;
-import com.hhp.lectureapp.lecture.business.LectureRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
