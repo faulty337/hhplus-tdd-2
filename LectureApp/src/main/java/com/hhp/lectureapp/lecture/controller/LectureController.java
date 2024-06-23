@@ -3,12 +3,11 @@ package com.hhp.lectureapp.lecture.controller;
 
 import com.hhp.lectureapp.lecture.business.LectureService;
 import com.hhp.lectureapp.lecture.controller.dto.GetLectureDto;
+import com.hhp.lectureapp.lecture.controller.dto.PostLectureDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -22,5 +21,14 @@ public class LectureController {
     @GetMapping
     public ResponseEntity<List<GetLectureDto>> getLectureList() {
         return new ResponseEntity<>(lectureService.getLectureList(), HttpStatus.OK);
+    }
+
+    @PostMapping("/{lectureId}/apply")
+    public ResponseEntity<PostLectureDto> applyLecture(
+            @PathVariable long lectureId,
+            @RequestBody long userId
+    ){
+        PostLectureDto postLectureDto = lectureService.applyLecture(lectureId, userId);
+        return null;
     }
 }
