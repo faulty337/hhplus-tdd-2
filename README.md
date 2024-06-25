@@ -72,7 +72,7 @@
     ```
 
 ## ERD
-![Untitled](https://github.com/faulty337/hhplus-tdd-2/assets/37091532/7ca2030a-ca4c-434e-a6ac-b42715f866be)
+![image](https://github.com/faulty337/hhplus-tdd-2/assets/37091532/2a0b6db2-a502-4802-a87a-efe94de24ffc)
 
 
 ## Test Case
