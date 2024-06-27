@@ -14,4 +14,6 @@ public interface LectureApplicationRepository {
     List<LectureApplicationDomain> findByIdLectureSessionId(long sessionId);
 
     boolean existsByUserIdAndLectureId(long sessionId, long userId);
+
+    List<LectureApplicationDomain> findAllByIdUserId(long userId);
 }

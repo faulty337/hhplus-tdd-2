@@ -6,7 +6,7 @@ import com.hhp.lectureapp.lecture.business.dto.PostLectureDto;
 import java.util.List;
 
 public interface LectureService {
-    List<GetLectureDto> getLectureList();
+    List<GetLectureDto> getLectureList(long userId);
 
     PostLectureDto applyLecture(long lectureId, long userId, long sessionId);
 

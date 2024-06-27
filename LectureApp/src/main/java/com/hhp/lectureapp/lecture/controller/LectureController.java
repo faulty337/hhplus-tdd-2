@@ -20,8 +20,11 @@ public class LectureController {
     private final LectureService lectureService;
 
     @GetMapping
-    public ResponseEntity<List<GetLectureDto>> getLectureList() {
-        return new ResponseEntity<>(lectureService.getLectureList(), HttpStatus.OK);
+
+    public ResponseEntity<List<GetLectureDto>> getLectureList(
+            @RequestParam long userId
+    ) {
+        return new ResponseEntity<>(lectureService.getLectureList(userId), HttpStatus.OK);
     }
 
     @PostMapping("{lectureId}/apply")

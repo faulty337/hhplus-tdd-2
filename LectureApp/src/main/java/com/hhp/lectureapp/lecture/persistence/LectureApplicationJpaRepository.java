@@ -11,4 +11,6 @@ public interface LectureApplicationJpaRepository extends JpaRepository<LectureAp
     List<LectureApplication> findByIdLectureSessionId(Long lectureSessionId);
 
     boolean existsByIdLectureSessionIdAndIdUserId(Long lectureSessionId, Long userId);
+
+    List<LectureApplication> findAllByIdUserId(Long userId);
 }
