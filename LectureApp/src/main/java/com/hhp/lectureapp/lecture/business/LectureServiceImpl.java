@@ -3,6 +3,7 @@ package com.hhp.lectureapp.lecture.business;
 import com.hhp.lectureapp.lecture.business.domain.LectureApplicationDomain;
 import com.hhp.lectureapp.lecture.business.domain.LectureDomain;
 import com.hhp.lectureapp.lecture.business.domain.LectureSessionDomain;
+import com.hhp.lectureapp.lecture.business.domain.UserDomain;
 import com.hhp.lectureapp.lecture.business.dto.GetLectureDto;
 import com.hhp.lectureapp.common.CustomException;
 import com.hhp.lectureapp.common.ErrorCode;
@@ -60,4 +61,10 @@ public class LectureServiceImpl implements LectureService {
 
         return new PostLectureDto(lectureSession.getId(), lecture.getTitle(), 1);
     }
+
+    @Override
+    public Boolean isApplication(long userId, long sessionId) {
+        return lectureApplicationRepository.existsByUserIdAndLectureId(userId, sessionId);
+    }
+
 }
