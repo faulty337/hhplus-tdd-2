@@ -41,6 +41,9 @@ public class LectureRepositoryTest {
     private UserRepository userRepository;
 
 
+    //JPA 쓴지 오래라 저장 형태 단순 파악하기 위한 테스트였습니다.
+
+
     @Test
     public void lectureApplicationSaveTest(){
         long userId = 3;

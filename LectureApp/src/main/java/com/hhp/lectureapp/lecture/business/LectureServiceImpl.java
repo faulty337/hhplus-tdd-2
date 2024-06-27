@@ -34,6 +34,9 @@ public class LectureServiceImpl implements LectureService {
         return lectureSessionRepository.findByIdNotInAndOpened(sessionId).stream().map(session -> new GetLectureDto(session.getId(), session.getCurrentApplications(), session.getApplicationLimit())).toList();
     }
 
+
+    //해당 부분 유효성 체크, 로직으로 인해 너무 길어지는데 간단한 userId나 lectureId에 대한 유효성 체크를 따로 함수로 만들어야 하는지..
+    //함수로 만들게 되면 사실 findById 라는 함수가 이미 하고 있는 것을 한겹 감싸는 형식이 되어 조금 애매합니다.
     @Transactional
     @Override
     public PostLectureDto applyLecture(long lectureId, long userId, long sessionId) {
