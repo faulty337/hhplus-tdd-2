@@ -63,6 +63,7 @@ public class LectureTest {
         userRepository.deleteAll();
     }
 
+    //강의 전체 목록에 대한 조회 성공 테스트
     @Test
     @DisplayName("강의 목록 조회 테스트 - 정상 동작")
     public void getAllOpenLecturesTest() throws Exception {
@@ -94,6 +95,7 @@ public class LectureTest {
                 .andExpect(jsonPath("$.size()").value(sessionSize - applicationSize));
     }
 
+    //강의 전체 목록에 대한 조회 없는 유저 예외 테스트
     @Test
     @DisplayName("강의 목록 조회 테스트 - 유저 X 테스트")
     public void getAllOpenLectureNotFoundUserTest() throws Exception {
@@ -104,6 +106,7 @@ public class LectureTest {
                 .andExpect(jsonPath("$.msg").value(ErrorCode.NOT_FOUND_USER_ID.getMsg()));
     }
 
+    //강의 신청 성공 테스트
     @Test
     @DisplayName("강의 신청 테스트 - 정상 동작")
     public void applyLectureTest() throws Exception {
@@ -131,6 +134,7 @@ public class LectureTest {
 
     }
 
+    //중복 강의 신청 예외 테스트
     @Test
     @DisplayName("강의 신청 테스트 - 중복 유저 예외 테스트")
     public void applyDuplicateExceptionTest() throws Exception {
@@ -156,6 +160,7 @@ public class LectureTest {
 
     }
 
+    //신청된 강의 신청 확인 테스트
     @Test
     @DisplayName("강의 신청 확인- 신청 성공 동작")
     public void isApplicationSuccessTest() throws Exception {
@@ -171,6 +176,7 @@ public class LectureTest {
                 .andExpect(content().string("true"));
     }
 
+    //신청 안된 신청 확인 테스트
     @Test
     @DisplayName("강의 신청 확인- 신청 실패 동작")
     public void isApplicationFailTest() throws Exception {

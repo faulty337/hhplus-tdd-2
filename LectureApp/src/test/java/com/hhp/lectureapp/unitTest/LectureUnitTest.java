@@ -50,6 +50,7 @@ public class LectureUnitTest {
         MockitoAnnotations.openMocks(this);  // Mock 객체 초기화
     }
 
+    //강의 목록 조회 정상 동작 테스트
     @Test
     @DisplayName("getLectureList - 정상 동작")
     public void getLectureListTest() {
@@ -79,6 +80,7 @@ public class LectureUnitTest {
 
     }
 
+    //없는 유저 예외 테스트
     @Test
     @DisplayName("getLectureList - not found userId 예외 테스트")
     public void getLectureListNotFoundUserIdTest() {
@@ -94,6 +96,7 @@ public class LectureUnitTest {
 
     }
 
+    //강의 신청 없는 유저 예외 테스트
     @Test
     @DisplayName("applyLecture - not found userId 예외 테스트")
     public void applyLectureNotFoundUserIdTest() {
@@ -106,6 +109,7 @@ public class LectureUnitTest {
         assertEquals(ErrorCode.NOT_FOUND_USER_ID.getMsg(), exception.getMsg());
     }
 
+    //강의 신청 없는 강의 예외 테스트
     @Test
     @DisplayName("applyLecture - not found lectureId 예외 테스트")
     public void applyLectureNotFoundLectureIdTest() {
@@ -121,6 +125,7 @@ public class LectureUnitTest {
 
     }
 
+    //강의 신청 중복 예외 테스트
     @Test
     @DisplayName("applyLecture - 중복 예외 테스트")
     public void applyLectureDuplicateUserTest() {
