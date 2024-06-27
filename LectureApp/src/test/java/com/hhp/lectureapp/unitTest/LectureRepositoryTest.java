@@ -1,14 +1,19 @@
 package com.hhp.lectureapp.unitTest;
 
 import com.hhp.lectureapp.lecture.business.LectureSessionRepository;
+import com.hhp.lectureapp.lecture.business.UserRepository;
 import com.hhp.lectureapp.lecture.business.domain.LectureApplicationDomain;
 import com.hhp.lectureapp.lecture.business.LectureApplicationRepository;
 import com.hhp.lectureapp.lecture.business.domain.LectureSessionDomain;
+import com.hhp.lectureapp.lecture.business.domain.UserDomain;
 import com.hhp.lectureapp.lecture.persistence.LectureApplicationId;
 import com.hhp.lectureapp.lecture.persistence.LectureApplicationJpaRepository;
 import com.hhp.lectureapp.lecture.persistence.LectureSessionJpaRepository;
+import com.hhp.lectureapp.lecture.persistence.UserJpaRepository;
 import com.hhp.lectureapp.lecture.persistence.entity.LectureApplication;
 import com.hhp.lectureapp.lecture.persistence.entity.LectureSession;
+import com.hhp.lectureapp.lecture.persistence.entity.Users;
+import org.apache.catalina.User;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -30,6 +35,10 @@ public class LectureRepositoryTest {
     private LectureSessionJpaRepository lectureSessionJpaRepository;
     @Autowired
     private LectureSessionRepository lectureSessionRepository;
+    @Autowired
+    private UserJpaRepository userJpaRepository;
+    @Autowired
+    private UserRepository userRepository;
 
 
     @Test
@@ -86,6 +95,20 @@ public class LectureRepositoryTest {
 
         assertEquals(updateSessionDomain.getCurrentApplications(), limit);
         assertTrue(updateSessionDomain.isFull());
+
+    }
+
+    @Test
+    public void userSaveAndSelectTest(){
+        long userId = 1;
+        Users users = new Users(userId);
+        userJpaRepository.save(users);
+        Users saveUser = userJpaRepository.findById(userId).get();
+
+        UserDomain saveUserRep = userRepository.findById(userId).get();
+
+        assertEquals(users.getId(), saveUser.getId());
+        assertEquals(users.getId(), saveUserRep.getId());
 
     }
 }

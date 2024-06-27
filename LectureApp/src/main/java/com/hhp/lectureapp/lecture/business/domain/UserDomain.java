@@ -1,9 +1,11 @@
 package com.hhp.lectureapp.lecture.business.domain;
 
 import com.hhp.lectureapp.common.BaseEntity;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 
+@Getter
 public class UserDomain {
     private long id;
 

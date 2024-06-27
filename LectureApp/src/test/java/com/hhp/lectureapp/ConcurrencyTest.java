@@ -19,11 +19,9 @@ import java.util.concurrent.CompletableFuture;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.*;
 
 
-@Transactional
 @SpringBootTest
 public class ConcurrencyTest {
 
@@ -88,6 +86,35 @@ public class ConcurrencyTest {
         LectureSession session = lectureSessionRepository.findById(lectureSession.getId()).get();
         assertFalse(session.isFull());
         assertEquals(1, session.getCurrentApplications());
+    }
+
+    @Test
+    public void applyConcurrencyFullTest(){
+        LocalDateTime now = LocalDateTime.now();
+        Lecture lecture = new Lecture(1L, "test");
+        lectureJpaRepository.save(lecture);
+
+        Users user1 = new Users(1L);
+        Users user2 = new Users(2L);
+        Users user3 = new Users(3L);
+        Users user4 = new Users(4L);
+        Users user5 = new Users(5L);
+        userJpaRepository.saveAll(List.of(user1, user2, user3, user4, user5));
+
+        LectureSession lectureSession = new LectureSession(1L, lecture.getId(), 4, 0, false, now.minusHours(1), now.minusDays(1));
+        lectureSessionRepository.save(lectureSession);
+
+        CompletableFuture.allOf(
+                CompletableFuture.runAsync(() -> safeApplyLecture(lecture.getId(), user1.getId(), lectureSession.getId())),
+                CompletableFuture.runAsync(() -> safeApplyLecture(lecture.getId(), user2.getId(), lectureSession.getId())),
+                CompletableFuture.runAsync(() -> safeApplyLecture(lecture.getId(), user3.getId(), lectureSession.getId())),
+                CompletableFuture.runAsync(() -> safeApplyLecture(lecture.getId(), user4.getId(), lectureSession.getId())),
+                CompletableFuture.runAsync(() -> safeApplyLecture(lecture.getId(), user5.getId(), lectureSession.getId()))
+        ).join();
+
+        LectureSession session = lectureSessionRepository.findById(lectureSession.getId()).get();
+        assertTrue(session.isFull());
+        assertEquals(session.getCurrentApplications(), 4);
     }
 
     private void safeApplyLecture(long lectureId, long userId, long sessionId) {
