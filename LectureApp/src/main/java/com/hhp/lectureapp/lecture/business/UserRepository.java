@@ -1,4 +1,6 @@
-package com.hhp.lectureapp.user.business;
+package com.hhp.lectureapp.lecture.business;
+
+import com.hhp.lectureapp.lecture.business.domain.UserDomain;
 
 import java.util.Optional;
 

@@ -1,10 +1,14 @@
 package com.hhp.lectureapp.lecture.business.domain;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+@Getter
 @AllArgsConstructor
+@NoArgsConstructor
 public class LectureSessionDomain {
     private long id;
 
@@ -20,4 +24,10 @@ public class LectureSessionDomain {
 
     private LocalDateTime createdAt;
 
+    public void applyUser() {
+        currentApplications++;
+        if(currentApplications == applicationLimit) {
+            isFull = true;
+        }
+    }
 }

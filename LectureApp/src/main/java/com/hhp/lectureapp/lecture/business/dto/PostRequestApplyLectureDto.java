@@ -3,13 +3,13 @@ package com.hhp.lectureapp.lecture.business.dto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Getter
-@AllArgsConstructor
+@Setter
 @NoArgsConstructor
-public class PostLectureDto {
+@AllArgsConstructor
+public class PostRequestApplyLectureDto {
+    private long userId;
     private long sessionId;
-    private String title;
-    private int userCount;
-
 }

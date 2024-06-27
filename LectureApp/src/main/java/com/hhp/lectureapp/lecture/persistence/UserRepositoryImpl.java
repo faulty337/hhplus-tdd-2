@@ -1,7 +1,8 @@
-package com.hhp.lectureapp.user.persistence;
+package com.hhp.lectureapp.lecture.persistence;
 
-import com.hhp.lectureapp.user.business.UserDomain;
-import com.hhp.lectureapp.user.business.UserRepository;
+import com.hhp.lectureapp.lecture.business.UserRepository;
+import com.hhp.lectureapp.lecture.business.domain.UserDomain;
+import com.hhp.lectureapp.lecture.persistence.entity.Users;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 

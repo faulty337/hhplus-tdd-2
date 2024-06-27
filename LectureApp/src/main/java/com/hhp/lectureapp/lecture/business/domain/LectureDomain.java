@@ -9,6 +9,6 @@ import java.time.LocalDateTime;
 @Getter
 public class LectureDomain {
     private long id;
-
+    private String title;
     private LocalDateTime createdAt;
 }

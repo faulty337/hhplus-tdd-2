@@ -1,7 +1,8 @@
-package com.hhp.lectureapp.lecture.persistence;
+package com.hhp.lectureapp.lecture.persistence.entity;
 
 import com.hhp.lectureapp.common.BaseEntity;
-import com.hhp.lectureapp.lecture.business.LectureApplicationDomain;
+import com.hhp.lectureapp.lecture.business.domain.LectureApplicationDomain;
+import com.hhp.lectureapp.lecture.persistence.LectureApplicationId;
 import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import lombok.AllArgsConstructor;
@@ -23,7 +24,7 @@ public class LectureApplication extends BaseEntity {
     }
 
     public LectureApplicationDomain toDomain() {
-        return new LectureApplicationDomain(this.id, createdAt);
+        return new LectureApplicationDomain(this.id.getUserId(), this.id.getLectureSessionId(), createdAt);
     }
 
 }

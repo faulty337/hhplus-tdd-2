@@ -1,16 +1,15 @@
 package com.hhp.lectureapp.lecture.business;
 
+import com.hhp.lectureapp.lecture.business.domain.LectureApplicationDomain;
+import com.hhp.lectureapp.lecture.business.domain.LectureDomain;
 import com.hhp.lectureapp.lecture.business.domain.LectureSessionDomain;
 import com.hhp.lectureapp.lecture.business.dto.GetLectureDto;
 import com.hhp.lectureapp.common.CustomException;
 import com.hhp.lectureapp.common.ErrorCode;
 import com.hhp.lectureapp.lecture.business.dto.PostLectureDto;
-import com.hhp.lectureapp.lecture.persistence.LectureApplication;
-import com.hhp.lectureapp.lecture.persistence.LectureApplicationId;
-import com.hhp.lectureapp.user.business.UserDomain;
-import com.hhp.lectureapp.user.business.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -24,31 +23,41 @@ public class LectureServiceImpl implements LectureService {
 
     @Override
     public List<GetLectureDto> getLectureList() {
-//        LocalDateTime now = LocalDateTime.now();
-//        return lectureRepository.findAllByOpenedAtBeforeAndIsFull(now, false).stream()
-//                .map(lecture -> new GetLectureDto(
-//                        lecture.getId(),
-//                        lecture.getUserCount(),
-//                        lecture.getUserLimit())
-//                ).toList();
+
         return null;
     }
 
+    @Transactional
     @Override
     public PostLectureDto applyLecture(long lectureId, long userId, long sessionId) {
-        UserDomain user = userRepository.findById(userId).orElseThrow(
+        userRepository.findById(userId).orElseThrow(
                 () -> new CustomException(ErrorCode.NOT_FOUND_USER_ID)
+        );
+
+        LectureDomain lecture = lectureRepository.findById(lectureId).orElseThrow(
+                () -> new CustomException(ErrorCode.NOT_FOUND_LECTURE_ID)
         );
 
         LectureSessionDomain lectureSession = lectureSessionRepository.findByIdAndLectureId(sessionId, lectureId).orElseThrow(
                 () -> new CustomException(ErrorCode.NOT_FOUND_LECTURE)
         );
 
-        LectureApplicationDomain lectureApplication = new LectureApplicationDomain(new LectureApplicationId(userId, sessionId));
+        if(lectureSession.isFull()){
+            throw new CustomException(ErrorCode.FULL_LECTURE);
+        }
 
+        if(lectureApplicationRepository.existsByUserIdAndLectureId(sessionId, userId)){
+            throw new CustomException(ErrorCode.DUPLICATE_USER_APPLICATION);
+        };
 
+        LectureApplicationDomain lectureApplication = new LectureApplicationDomain(userId, sessionId);
 
+        lectureApplicationRepository.save(lectureApplication);
 
-        return null;
+        lectureSession.applyUser();
+
+        lectureSessionRepository.update(lectureSession);
+
+        return new PostLectureDto(lectureSession.getId(), lecture.getTitle(), 1);
     }
 }
