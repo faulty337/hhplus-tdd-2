@@ -1,4 +1,4 @@
-package com.hhp.lectureapp.lecture.controller.dto;
+package com.hhp.lectureapp.lecture.business.dto;
 
 public record GetLectureDto (
         long lectureId,
