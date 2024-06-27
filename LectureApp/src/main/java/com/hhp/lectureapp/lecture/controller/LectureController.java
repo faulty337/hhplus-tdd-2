@@ -26,9 +26,10 @@ public class LectureController {
     @PostMapping("/{lectureId}/apply")
     public ResponseEntity<PostLectureDto> applyLecture(
             @PathVariable long lectureId,
-            @RequestBody long userId
+            @RequestBody long userId,
+            @RequestBody long sessionId
     ){
-        PostLectureDto postLectureDto = lectureService.applyLecture(lectureId, userId);
+        PostLectureDto postLectureDto = lectureService.applyLecture(lectureId, userId, sessionId);
         return null;
     }
 }

@@ -8,5 +8,5 @@ import java.util.List;
 public interface LectureService {
     List<GetLectureDto> getLectureList();
 
-    PostLectureDto applyLecture(long lectureId, long userId);
+    PostLectureDto applyLecture(long lectureId, long userId, long sessionId);
 }
