@@ -17,8 +17,8 @@ public class LectureSessionRepositoryImpl implements LectureSessionRepository {
     private final LectureSessionJpaRepository lectureSessionJpaRepository;
 
     @Override
-    public Optional<LectureSessionDomain> findByIdAndLectureId(long id, long lectureId) {
-        return lectureSessionJpaRepository.findByIdAndLectureId(id, lectureId).map(LectureSession::toDomain);
+    public Optional<LectureSessionDomain> findByIdAndLectureIdWithLock(long id, long lectureId) {
+        return lectureSessionJpaRepository.findByIdAndLectureIdWithLock(id, lectureId).map(LectureSession::toDomain);
     }
 
     @Override

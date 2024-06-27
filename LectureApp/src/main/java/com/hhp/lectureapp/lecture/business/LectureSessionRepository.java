@@ -6,7 +6,7 @@ import java.util.Optional;
 
 
 public interface LectureSessionRepository {
-    Optional<LectureSessionDomain> findByIdAndLectureId(long id, long lectureId);
+    Optional<LectureSessionDomain> findByIdAndLectureIdWithLock(long id, long lectureId);
 
     LectureSessionDomain update(LectureSessionDomain lectureSession);
 }

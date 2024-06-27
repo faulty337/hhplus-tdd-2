@@ -119,8 +119,8 @@ public class LectureUnitTest {
     @Test
     @DisplayName("applyLecture - not found lectureId 예외 테스트")
     public void applyLectureNotFoundLectureIdTest() {
-        given(userRepository.findById(any(Long.class))).willReturn(Optional.of(new UserDomain(1)));
-        given(lectureSessionRepository.findByIdAndLectureId(any(Long.class), any(Long.class))).willReturn(Optional.of(new LectureSessionDomain()));
+        given(userRepository.findById(any(Long.class))).willReturn(Optional.of(new UserDomain(1, LocalDateTime.now())));
+        given(lectureSessionRepository.findByIdAndLectureIdWithLock(any(Long.class), any(Long.class))).willReturn(Optional.of(new LectureSessionDomain()));
         given(lectureRepository.findById(any(Long.class))).willReturn(Optional.empty());
 
         CustomException exception = assertThrows(CustomException.class, () -> {
@@ -134,9 +134,9 @@ public class LectureUnitTest {
     @Test
     @DisplayName("applyLecture - 중복 예외 테스트")
     public void applyLectureDuplicateUserTest() {
-        given(userRepository.findById(any(Long.class))).willReturn(Optional.of(new UserDomain(1)));
+        given(userRepository.findById(any(Long.class))).willReturn(Optional.of(new UserDomain(1, LocalDateTime.now())));
         given(lectureRepository.findById(any(Long.class))).willReturn(Optional.of(new LectureDomain(1, "test", LocalDateTime.now())));
-        given(lectureSessionRepository.findByIdAndLectureId(any(Long.class), any(Long.class))).willReturn(Optional.of(new LectureSessionDomain()));
+        given(lectureSessionRepository.findByIdAndLectureIdWithLock(any(Long.class), any(Long.class))).willReturn(Optional.of(new LectureSessionDomain()));
         given(lectureApplicationRepository.existsByUserIdAndLectureId(any(Long.class), any(Long.class))).willReturn(true);
 
         CustomException exception = assertThrows(CustomException.class, () -> {

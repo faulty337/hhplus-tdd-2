@@ -38,7 +38,7 @@ public class LectureServiceImpl implements LectureService {
                 () -> new CustomException(ErrorCode.NOT_FOUND_LECTURE_ID)
         );
 
-        LectureSessionDomain lectureSession = lectureSessionRepository.findByIdAndLectureId(sessionId, lectureId).orElseThrow(
+        LectureSessionDomain lectureSession = lectureSessionRepository.findByIdAndLectureIdWithLock(sessionId, lectureId).orElseThrow(
                 () -> new CustomException(ErrorCode.NOT_FOUND_LECTURE)
         );
 

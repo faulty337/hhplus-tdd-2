@@ -22,6 +22,6 @@ public class Users extends BaseEntity {
     private long id;
 
     public UserDomain toDomain(){
-        return new UserDomain(this.id);
+        return new UserDomain(this.id, this.getCreatedAt());
     }
 }

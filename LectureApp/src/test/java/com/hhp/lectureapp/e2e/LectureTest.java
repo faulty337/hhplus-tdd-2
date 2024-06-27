@@ -35,7 +35,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@Transactional
+
 @SpringBootTest
 @AutoConfigureMockMvc
 public class LectureTest {
@@ -54,8 +54,6 @@ public class LectureTest {
     private LectureApplicationJpaRepository lectureApplicationRepository;
     @Autowired
     private UserJpaRepository userRepository;
-    @Autowired
-    private UserJpaRepository userJpaRepository;
 
 
 //    @Test
@@ -76,7 +74,7 @@ public class LectureTest {
         Lecture lecture = new Lecture(1L, "test");
         lectureJpaRepository.save(lecture);
         Users user = new Users(1L);
-        userJpaRepository.save(user);
+        userRepository.save(user);
         LectureSession lectureSession = new LectureSession(1L, lecture.getId(), 30, 0, false, now.minusHours(1), now.minusDays(1));
         lectureSessionRepository.save(lectureSession);
 
@@ -88,7 +86,6 @@ public class LectureTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(objectMapper.writeValueAsString(request))
                 )
-
             .andExpect(status().isOk())
             .andExpect(MockMvcResultMatchers.jsonPath("$.sessionId").value(lectureSession.getId()))
             .andExpect(MockMvcResultMatchers.jsonPath("$.title").value(lecture.getTitle()))
@@ -104,7 +101,7 @@ public class LectureTest {
         Lecture lecture = new Lecture(1L, "test");
         lectureJpaRepository.save(lecture);
         Users user = new Users(1L);
-        userJpaRepository.save(user);
+        userRepository.save(user);
         LectureSession lectureSession = new LectureSession(1L, lecture.getId(), 30, 0, false, now.minusHours(1), now.minusDays(1));
         lectureSessionRepository.save(lectureSession);
 
