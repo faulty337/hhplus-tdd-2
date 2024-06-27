@@ -32,8 +32,7 @@ import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 
 @SpringBootTest
@@ -64,15 +63,46 @@ public class LectureTest {
         userRepository.deleteAll();
     }
 
-//    @Test
-//    @DisplayName("강의 목록 조회 테스트 - 정상 동작")
-//    public void getAllOpenLectures() throws Exception {
-//
-//        int successSize = lectureList.stream().map(Lecture::toDomain).filter(lecture -> !lecture.isFull() && LocalDateTime.now().isAfter(lecture.getOpenedAt())).toList().size();
-//        mockMvc.perform(get("/lectures"))
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("$.size()").value(successSize));
-//    }
+    @Test
+    @DisplayName("강의 목록 조회 테스트 - 정상 동작")
+    public void getAllOpenLecturesTest() throws Exception {
+        long sessionSize = 15;
+        long applicationSize = 7;
+        long userId = 1;
+        LocalDateTime now = LocalDateTime.now();
+
+        userRepository.save(new Users(userId));
+        List<LectureApplication> lectureApplicationDomainList = new ArrayList<>();
+        for(long i = 1; i <= applicationSize; i++) {
+            lectureApplicationDomainList.add(new LectureApplication(new LectureApplicationId(userId, i)));
+        }
+
+
+        lectureApplicationRepository.saveAll(lectureApplicationDomainList);
+
+
+
+        List<LectureSession> lectureSessionList = new ArrayList<>();
+        for(long i = 1; i <= sessionSize; i++){
+            lectureSessionList.add(new LectureSession(i, i, 20, 0, false, now.minusHours(1), now.minusDays(1)));
+        }
+
+        lectureSessionRepository.saveAll(lectureSessionList);
+
+        mockMvc.perform(get("/lecture").param("userId", String.valueOf(userId)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.size()").value(sessionSize - applicationSize));
+    }
+
+    @Test
+    @DisplayName("강의 목록 조회 테스트 - 유저 X 테스트")
+    public void getAllOpenLectureNotFoundUserTest() throws Exception {
+        long userId = 1;
+
+        mockMvc.perform(get("/lecture").param("userId", String.valueOf(userId)))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.msg").value(ErrorCode.NOT_FOUND_USER_ID.getMsg()));
+    }
 
     @Test
     @DisplayName("강의 신청 테스트 - 정상 동작")
@@ -95,9 +125,9 @@ public class LectureTest {
                 .content(objectMapper.writeValueAsString(request))
                 )
             .andExpect(status().isOk())
-            .andExpect(MockMvcResultMatchers.jsonPath("$.sessionId").value(lectureSession.getId()))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.title").value(lecture.getTitle()))
-            .andExpect(MockMvcResultMatchers.jsonPath("$.userCount").value(1));
+            .andExpect(jsonPath("$.sessionId").value(lectureSession.getId()))
+            .andExpect(jsonPath("$.title").value(lecture.getTitle()))
+            .andExpect(jsonPath("$.userCount").value(1));
 
     }
 
@@ -122,7 +152,7 @@ public class LectureTest {
                     .content(objectMapper.writeValueAsString(request))
             )
             .andExpect(status().isBadRequest())
-            .andExpect(MockMvcResultMatchers.jsonPath("$.msg").value(ErrorCode.DUPLICATE_USER_APPLICATION.getMsg()));
+            .andExpect(jsonPath("$.msg").value(ErrorCode.DUPLICATE_USER_APPLICATION.getMsg()));
 
     }
 
@@ -146,9 +176,6 @@ public class LectureTest {
     public void isApplicationFailTest() throws Exception {
         long userId = 1;
         long sessionId = 1;
-
-//        LectureApplication lectureApplication = new LectureApplication(new LectureApplicationId(userId, sessionId));
-//        lectureApplicationRepository.save(lectureApplication);
 
         mockMvc.perform(get("/lecture/application/{userId}", userId)
                         .param("sessionId", String.valueOf(sessionId)))

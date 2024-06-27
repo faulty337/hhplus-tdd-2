@@ -40,5 +40,10 @@ public class LectureApplicationRepositoryImpl implements LectureApplicationRepos
         return lectureApplicationJpaRepository.existsByIdLectureSessionIdAndIdUserId(lectureId, userId);
     }
 
+    @Override
+    public List<LectureApplicationDomain> findAllByIdUserId(long userId) {
+        return lectureApplicationJpaRepository.findAllByIdUserId(userId).stream().map(LectureApplication::toDomain).toList();
+    }
+
 
 }

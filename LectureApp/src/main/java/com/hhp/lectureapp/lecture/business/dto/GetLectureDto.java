@@ -1,8 +1,14 @@
 package com.hhp.lectureapp.lecture.business.dto;
 
-public record GetLectureDto (
-        long lectureId,
-        int userCount,
-        int userLimit
-){
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@Getter
+@NoArgsConstructor
+@AllArgsConstructor
+public class GetLectureDto{
+    private long sessionId;
+    private int userCount;
+    private int userLimit;
 }

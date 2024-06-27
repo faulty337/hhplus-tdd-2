@@ -9,9 +9,11 @@ import com.hhp.lectureapp.lecture.business.domain.LectureApplicationDomain;
 import com.hhp.lectureapp.lecture.business.LectureServiceImpl;
 import com.hhp.lectureapp.lecture.business.domain.LectureDomain;
 import com.hhp.lectureapp.lecture.business.domain.LectureSessionDomain;
+import com.hhp.lectureapp.lecture.business.dto.GetLectureDto;
 import com.hhp.lectureapp.lecture.business.dto.PostLectureDto;
 import com.hhp.lectureapp.lecture.persistence.*;
 import com.hhp.lectureapp.lecture.business.domain.UserDomain;
+import com.hhp.lectureapp.lecture.persistence.entity.LectureSession;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -48,61 +50,49 @@ public class LectureUnitTest {
         MockitoAnnotations.openMocks(this);  // Mock 객체 초기화
     }
 
-//    @Test
-//    @DisplayName("getLectureList() - 정상 동작")
-//    public void getLectureListTest() {
-//        List<LectureDomain> lectureDomainList = new ArrayList<>();
-//        int size = 5;
-//        for(long i = 0; i < size; i++){
-//            lectureDomainList.add(new LectureDomain(i, 30, 20, false, LocalDateTime.now().minusDays(1L), LocalDateTime.now().minusDays(2L)));
-//        }
-//        given(lectureRepository.findAllByOpenedAtBeforeAndIsFull(any(LocalDateTime.class), any(Boolean.class))).willReturn(lectureDomainList);
-//
-//        List<GetLectureDto> response = lectureService.getLectureList();
-//
-//        assertEquals(response.size(), size);
+    @Test
+    @DisplayName("getLectureList - 정상 동작")
+    public void getLectureListTest() {
+        long userId = 1;
+        int applicationSize = 13;
+        int sessionSize = 5;
+        LocalDateTime now = LocalDateTime.now();
+        List<LectureApplicationDomain> lectureApplicationDomainList = new ArrayList<>();
+        List<Long> sessionIdList = new ArrayList<>();
+        for(long i = 1; i <= applicationSize; i++) {
+            lectureApplicationDomainList.add(new LectureApplicationDomain(userId, i));
+            sessionIdList.add(i);
+        }
 
-//    }
+        List<LectureSession> lectureSessionList = new ArrayList<>();
+        for(int i = applicationSize+1; i < sessionSize + applicationSize + 1; i++){
+            lectureSessionList.add(new LectureSession(i, i, 20, 0, false, now.minusHours(1), now.minusDays(1)));
+        }
 
-//    @Test
-//    @DisplayName("getLectureList() - 정상 동작")
-//    public void getLectureListTest() {
-//        long userId = 1;
-//        long sessionId = 3;
-//        long lectureId = 4;
-//
-//        long listSize = 5;
-//
-//        LectureDomain lecture = new LectureDomain(lectureId, "title", LocalDateTime.now());
-//        UserDomain user = new UserDomain(userId);
-//        LectureApplicationId lectureApplicationId = new LectureApplicationId(userId, sessionId);
-//        LectureApplicationDomain lectureApplication = new LectureApplicationDomain(userId, sessionId);
-//        List<LectureApplicationDomain> lectureApplicationDomainList = new ArrayList<>();
-//
-//        for(int i = 1; i <= listSize; i++) {
-//            lectureApplicationDomainList.add(new LectureApplicationDomain(i, sessionId));
-//        }
-//
-//
-//        given(userRepository.findById(userId)).willReturn(Optional.of(user));
-//        given(lectureSessionRepository.findByIdAndLectureId(sessionId, lectureId)).willReturn(Optional.of(new LectureSessionDomain(sessionId, lectureId, 30, lectureApplicationDomainList.size(), false, LocalDateTime.now(), LocalDateTime.now())));
-//        given(lectureRepository.findById(lectureId)).willReturn(Optional.of(lecture));
-//        given(lectureApplicationRepository.findById(lectureApplicationId)).willReturn(Optional.of(lectureApplication));
-//        given(lectureApplicationRepository.findByIdLectureSessionId(sessionId)).willReturn(lectureApplicationDomainList);
-//
-//
-//        PostLectureDto response = lectureService.applyLecture(lectureId, userId, sessionId);
-//
-//
-//        assertEquals(response.getSessionId(), sessionId);
-//        assertEquals(response.getTitle(), lecture.getTitle());
-//        assertEquals(response.getUserCount(), lectureApplicationDomainList.size());
-////        List<GetLectureDto> response = lectureService.getLectureList();
-////
-////        assertEquals(response.size(), size);
-//
-//    }
+        given(userRepository.findById(userId)).willReturn(Optional.of(new UserDomain(userId, now)));
+        given(lectureApplicationRepository.findAllByIdUserId(userId)).willReturn(lectureApplicationDomainList);
+        given(lectureSessionRepository.findByIdNotInAndOpened(sessionIdList)).willReturn(lectureSessionList);
 
+        List<GetLectureDto> response = lectureService.getLectureList(userId);
+
+        assertEquals(response.size(), sessionSize);
+
+    }
+
+    @Test
+    @DisplayName("getLectureList - not found userId 예외 테스트")
+    public void getLectureListNotFoundUserIdTest() {
+
+        given(userRepository.findById(any(Long.class))).willReturn(Optional.empty());
+
+        List<GetLectureDto> response = lectureService.getLectureList(1);
+        CustomException exception = assertThrows(CustomException.class, () -> {
+            lectureService.getLectureList(1);
+        });
+
+        assertEquals(ErrorCode.NOT_FOUND_USER_ID.getMsg(), exception.getMsg());
+
+    }
 
     @Test
     @DisplayName("applyLecture - not found userId 예외 테스트")

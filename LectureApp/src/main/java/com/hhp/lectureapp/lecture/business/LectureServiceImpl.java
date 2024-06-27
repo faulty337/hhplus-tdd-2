@@ -8,6 +8,7 @@ import com.hhp.lectureapp.lecture.business.dto.GetLectureDto;
 import com.hhp.lectureapp.common.CustomException;
 import com.hhp.lectureapp.common.ErrorCode;
 import com.hhp.lectureapp.lecture.business.dto.PostLectureDto;
+import com.hhp.lectureapp.lecture.persistence.entity.LectureSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,9 +24,14 @@ public class LectureServiceImpl implements LectureService {
     private final LectureRepository lectureRepository;
 
     @Override
-    public List<GetLectureDto> getLectureList() {
+    public List<GetLectureDto> getLectureList(long userId) {
+        userRepository.findById(userId).orElseThrow(
+                () -> new CustomException(ErrorCode.NOT_FOUND_USER_ID)
+        );
+        List<Long> sessionId = lectureApplicationRepository.findAllByIdUserId(userId).stream().map(LectureApplicationDomain::getSessionId).toList();
 
-        return null;
+
+        return lectureSessionRepository.findByIdNotInAndOpened(sessionId).stream().map(session -> new GetLectureDto(session.getId(), session.getCurrentApplications(), session.getApplicationLimit())).toList();
     }
 
     @Transactional
