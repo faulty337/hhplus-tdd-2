@@ -31,4 +31,12 @@ public class LectureController {
     ){
         return new ResponseEntity<>(lectureService.applyLecture(lectureId, request.getUserId(), request.getSessionId()), HttpStatus.OK);
     }
+
+    @GetMapping("/application/{userId}")
+    public ResponseEntity<Boolean> isApplication(
+            @PathVariable long userId,
+            @RequestParam long sessionId
+    ) {
+        return new ResponseEntity<>(lectureService.isApplication(userId, sessionId), HttpStatus.OK);
+    }
 }

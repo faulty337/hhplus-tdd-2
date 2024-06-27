@@ -9,4 +9,6 @@ public interface LectureService {
     List<GetLectureDto> getLectureList();
 
     PostLectureDto applyLecture(long lectureId, long userId, long sessionId);
+
+    Boolean isApplication(long userId, long sessionId);
 }

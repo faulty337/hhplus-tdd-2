@@ -30,9 +30,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.springframework.test.web.client.match.MockRestRequestMatchers.jsonPath;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
@@ -55,6 +55,14 @@ public class LectureTest {
     @Autowired
     private UserJpaRepository userRepository;
 
+
+    @BeforeEach
+    public void setUp() {
+        lectureApplicationRepository.deleteAll();
+        lectureSessionRepository.deleteAll();
+        lectureJpaRepository.deleteAll();
+        userRepository.deleteAll();
+    }
 
 //    @Test
 //    @DisplayName("강의 목록 조회 테스트 - 정상 동작")
@@ -116,6 +124,36 @@ public class LectureTest {
             .andExpect(status().isBadRequest())
             .andExpect(MockMvcResultMatchers.jsonPath("$.msg").value(ErrorCode.DUPLICATE_USER_APPLICATION.getMsg()));
 
+    }
+
+    @Test
+    @DisplayName("강의 신청 확인- 신청 성공 동작")
+    public void isApplicationSuccessTest() throws Exception {
+        long userId = 1;
+        long sessionId = 1;
+
+        LectureApplication lectureApplication = new LectureApplication(new LectureApplicationId(userId, sessionId));
+        lectureApplicationRepository.save(lectureApplication);
+
+        mockMvc.perform(get("/lecture/application/{userId}", userId)
+                .param("sessionId", String.valueOf(sessionId)))
+                .andExpect(status().isOk())
+                .andExpect(content().string("true"));
+    }
+
+    @Test
+    @DisplayName("강의 신청 확인- 신청 실패 동작")
+    public void isApplicationFailTest() throws Exception {
+        long userId = 1;
+        long sessionId = 1;
+
+//        LectureApplication lectureApplication = new LectureApplication(new LectureApplicationId(userId, sessionId));
+//        lectureApplicationRepository.save(lectureApplication);
+
+        mockMvc.perform(get("/lecture/application/{userId}", userId)
+                        .param("sessionId", String.valueOf(sessionId)))
+                .andExpect(status().isOk())
+                .andExpect(content().string("false"));
     }
 
 
